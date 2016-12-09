@@ -13,34 +13,9 @@ public class Adm {
   public static void main(String... args) {
 
     List<String> users = Arrays.asList(
-        "melikhov",
-        "qwizzy",
-        "jsus",
-        "yurakura",
-        "nsobyanin",
-        "karpycheva",
-        "sekolosova",
-        "mturina",
-        "kuchumova",
-        "karama",
-        "chertkova",
-        "boronchiev",
-        "lozenko",
-        "motorin",
-        "alina24",
-        "adekvaten",
-        "ollven",
-        "librarian",
-        "greygrey",
-        "kolevatova",
-        "perovskaya",
-        "amlisov",
-        "andrey-nautilus",
-        "grand",
-        "whistler",
-        "a10zn8",
-        "dolf",
-        "a-kononova"
+        "dupavlov",
+        "innesa",
+        "budennaya"
     );
     Collections.shuffle(users);
     printResultList(users);
@@ -58,10 +33,9 @@ public class Adm {
       } catch (IOException e) {
         e.printStackTrace();
       }
-      if (userData != null && userData.get("location").contains("St. Petersburg")) {
-        result.put(user, new String[]{userData.get("firstName"), userData.get("lastName"), userData.get("email"), userData.get("login")
-        });
-      }
+//      if (userData != null && userData.get("location").contains("St. Petersburg")) { // TODO: надомники не имеют офиса
+      result.put(user, new String[]{userData.get("firstName"), userData.get("lastName"), userData.get("email"), userData.get("login")});
+//      }
     }
 
     String[] firstUser = new String[4];

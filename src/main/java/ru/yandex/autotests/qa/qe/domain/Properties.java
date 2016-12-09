@@ -63,7 +63,7 @@ public class Properties {
 
               if (object.get("first") != null) {
                 final JsonPrimitive firstName = object.getAsJsonObject("first").getAsJsonPrimitive("ru");
-                data.put("firstName", firstName.getAsString());
+                data.put("firstName", firstName.getAsString().trim());
               }
 
               if (object.get("location") != null) {
