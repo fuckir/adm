@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: ru.yandex.qatools.selenium:selenium-grid-client:1.0-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/ru/yandex/qatools/selenium/selenium-grid-client/1.0-SNAPSHOT/selenium-grid-client-1.0-20160126.152742-10.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/ru/yandex/qatools/selenium/selenium-grid-client/1.0-SNAPSHOT/selenium-grid-client-1.0-20160126.152742-10-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/ru/yandex/qatools/selenium/selenium-grid-client/1.0-SNAPSHOT/selenium-grid-client-1.0-20160126.152742-10-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
