@@ -25,7 +25,7 @@ public class Adm {
 
     Map<String, String> users = getUsers();
 
-    List<String> logins = new ArrayList<String>(users.keySet());
+    List<String> logins = new ArrayList<>(users.keySet());
 
     Collections.shuffle(logins);
 
@@ -114,9 +114,8 @@ public class Adm {
 
   private static Map<String, String> getUsers() {
     Map<String, String> users = new HashMap<>();
-    users.put("mruban", "");
-    users.put("ovalyona", "");
-    users.put("enilina", "");
+    users.put("a-alexeev", "Пожалуйста, не паззл и не другие подобные безделухи из Буквоедов.");
+    users.put("buhter", "");
     return users;
   }
 }

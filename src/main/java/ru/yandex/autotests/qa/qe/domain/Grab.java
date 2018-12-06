@@ -1,6 +1,5 @@
 package ru.yandex.autotests.qa.qe.domain;
 
-import ru.yandex.autotests.qa.utils.http.HttpClientBuilder;
 import ru.yandex.autotests.qa.utils.json.JsonUtils;
 import ru.yandex.autotests.qa.utils.json.RecursiveJsonVisitor;
 
@@ -13,6 +12,7 @@ import com.google.gson.JsonPrimitive;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
 /**
  * Created by dmitrys
@@ -29,7 +29,7 @@ public class Grab {
     String url = "https://api.staff.yandex-team.ru/v3/persons?_pretty=1&login=" + login
                  + "&_fields=login%2Cname.first.ru%2Cname.last.ru%2Cwork_email%2Clocation.office.city.name.en";
 
-    try (CloseableHttpClient httpClient = new HttpClientBuilder().build()) {
+    try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
       HttpGet request = new HttpGet(url);
       request.addHeader("Authorization", "OAuth " + Properties.O_AUTH);
       try (CloseableHttpResponse response = httpClient.execute(request)) {
