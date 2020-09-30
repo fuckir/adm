@@ -1,13 +1,11 @@
 package adm;
 
-import adm.domain.Grab;
-import adm.domain.RawUser;
-import adm.domain.User;
-
-
 import java.util.*;
 
 
+import adm.domain.Grab;
+import adm.domain.RawUser;
+import adm.domain.User;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
@@ -44,7 +42,7 @@ public class Adm {
                 firstUser = user;
             } else {
                 content = getMessages(user, oldUser);
-                sendEmail(content, oldUser.getEmail()); //todo
+//                sendEmail(content, oldUser.getEmail()); //todo
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -54,7 +52,7 @@ public class Adm {
             oldUser = user;
         }
         content = getMessages(firstUser, oldUser);
-    sendEmail(content, oldUser.getEmail()); //todo
+//        sendEmail(content, oldUser.getEmail()); //todo
     }
 
     //
@@ -67,26 +65,32 @@ public class Adm {
         System.out.println(String.join(" ", testMessage));
 
         return String.format("Здравствуй, %s. \n"
-                             + " Мы тут всё хорошенько перетасовали и так случилось, что в этом году твоей жертвой будет: %s %s "
+                             + "Мы тут всё хорошенько перетасовали и так случилось, что в этом году тебе предстоит осчастливить "
+                             + "подарком коллегу по имени: %s %s "
                              + "(https://staff.yandex-team.ru/%s).\n\n"
-                             + wishPart
+                             + "Теперь есть время до вечера 19 декабря (день перед празднованием Нового года в офисе), чтобы "
+                             + "обзавестись милым подарком для своей \"жертвы\" :)\n\n"
+                             + "В день празднования – 20 декабря до 15:00 оставь свой подарок вместе с остальными подарками под "
+                             + "Ёлочкой в лаунже. \n"
+                             + "\n"
+                             + "Обязательно напиши на подарке имя получателя!\n"
+                             + "Забрать свой подарок можно у этой же нарядной Ёлки в праздничный вечер. \n"
+//                             + wishPart
                              + "\n\n-- \n"
-                             + "Дима\n"
-                             + "Департамент Скуки и Развлечений / Отдел АДМ",
+                             + "Помощник ТС\n",
             oldUser.getFirstName(), newUser.getFirstName(), newUser.getLastName(), newUser.getLogin());
-//    return "Привет.\n"
-//           + "Завтра в течение дня надо принести подарок под ёлку, которая стоит на 5м этаже у ресепшена.\n"
-//           + "Подарок обязательно надо подписать. Постарайся подписать так, чтобы эта подпись не отвалилась, и чтобы потом не
-//        гадать "
-//           + " от какого она подарка.\n"
-//           + "Если найдешь подарок со своим именем, то его можно сразу забирать. Централизованной раздачи не будет\n"
-//           + "Очень хочется, чтобы все подарки приносились до 17:00, чтобы каждый участник не ждал до ночи своего Деда Мороза.\n"
-//           + "\n"
-//           + "Хорошо тебе отпраздновать, позитивных эмоций и больше детской радости.\n"
-//           + "\n"
-//           + "ЗЫ Если ты до сих пор не подготовил подарок своей жертве, то сегодня самое время это сделать :)\n"
-//           + "ЗЫЗЫ Если ты заболел/в командировке и не успел подготовить подарок, срочно напиши мне, будем что-то "
-//           + "оперативно придумывать.";
+//        return "Привет.\n"
+//               + "Завтра в течение дня надо принести подарок под ёлку, которая стоит на 5м этаже у ресепшена.\n"
+//               + "Подарок обязательно надо подписать. Постарайся подписать так, чтобы эта подпись не отвалилась, и чтобы потом не "
+//               + "гадать от какого она подарка.\n"
+//               + "Если найдешь подарок со своим именем, то его можно сразу забирать. Централизованной раздачи не будет.\n"
+//               + "Очень хочется, чтобы все подарки приносились до 17:00, чтобы каждый участник не ждал до ночи своего Деда Мороза.\n"
+//               + "\n"
+//               + "Хорошо тебе отпраздновать, позитивных эмоций и больше детской радости.\n"
+//               + "\n"
+//               + "ЗЫ Если ты до сих пор не подготовил подарок своей жертве, то сегодня самое время это сделать :)\n"
+//               + "ЗЫЗЫ Если ты заболел(а)/в командировке и не успел(а) подготовить подарок, срочно напиши мне, будем что-то "
+//               + "оперативно придумывать.";
     }
 
     private static List<User> getUsers(List<String> logins, Map<String, String> loginWishlistMap) {
@@ -123,8 +127,8 @@ public class Adm {
         email.setCharset("UTF-8");
 
         email.setFrom("dmitrys@yandex-team.ru");
-        email.setSubject("Клуб АДМ. Ваша жертва.");
-//    email.setSubject("Клуб АДМ. Праздник уже завтра.");
+        email.setSubject("Письмо для Тайного Санты");
+//        email.setSubject("Клуб АДМ. Праздник уже завтра.");
         email.setMsg(content);
         email.addTo(address);
         email.addCc("dmitrys@yamoney.ru");
@@ -134,8 +138,8 @@ public class Adm {
     private static Map<String, String> getLoginWishlistMap() {
         Map<String, String> loginWishlistMap = new HashMap<>();
 
-        loginWishlistMap.put("ezoteva", "На усмотрение моего Деда мороза. Но если совсем сложно, то я колллекционирую бусы, ракушки, зонтики-трости.");
-        loginWishlistMap.put("katrin-k", "Что-нибудь классное и не съедобное)");
+        loginWishlistMap.put("dedovaiv", "");
+        loginWishlistMap.put("starovoitovak", "");
 
         return loginWishlistMap;
     }
