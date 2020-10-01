@@ -52,7 +52,20 @@ public class GiftsSender {
     }
 
     private static String getContent(User user, String gift) {
-        return String.format("Привет, %s.\n\nРады тебе сообщить, что твой код подарка: %s", user.getFirstName(), gift);
+        return String.format("Привет, %s.\n"
+                             + "\n"
+                             + "Мы хотим чтобы мы все с теплотой вспоминал эпоху, когда мы делали Деньги в Яндексе. Каждый "
+                             + "получит "
+                             + "замечательный фирменный подарок Яндекс.Денег на память. \n"
+                             + "\n"
+                             + "Промокод твоего подарка %s\n"
+                             + "\n"
+                             + "Мы уже начали его собирать, чтобы отправить в твой город. Получить свой подарок можно будет"
+                             + " примерно"
+                             + " в течение пары недель.\n"
+                             + "\n"
+                             + "С теплотой,\n"
+                             + "Команда Yooteam", user.getFirstName(), gift);
     }
 
     private static List<User> grabUsers(List<String> logins) {
@@ -83,8 +96,8 @@ public class GiftsSender {
         email.setAuthenticator(new DefaultAuthenticator(USER_NAME, PASSWORD));
         email.setCharset("UTF-8");
 
-        email.setFrom("meetup@yamoney.ru");
-        email.setSubject("Подарочек");
+        email.setFrom("yooteam@yamoney.ru");
+        email.setSubject("Яндекс.Денежный подарок");
         email.setMsg(content);
         email.addTo(address);
         email.send();
@@ -92,11 +105,15 @@ public class GiftsSender {
 
     private static List<String> getGiftIds() {
         List<String> gifts = new ArrayList<>();
-        gifts.add("айлавью1");
-        gifts.add("айлавью2");
-        gifts.add("айлавью3");
-        gifts.add("айлавью4");
-        gifts.add("айлавью5");
+        gifts.add("Yooteam123");
+        gifts.add("Yooteam124");
+        gifts.add("Yooteam125");
+        gifts.add("Yooteam126");
+        gifts.add("Yooteam127");
+        gifts.add("Yooteam128");
+        gifts.add("Yooteam129");
+        gifts.add("Yooteam130");
+        gifts.add("Yooteam131");
 
         return gifts;
     }
@@ -104,12 +121,11 @@ public class GiftsSender {
     private static List<User> getUsers() {
         List<User> users = new ArrayList<>();
 
-//        users.add(new User("kurkova", "Куркова", "Лина", "kurkova@yamoney.ru", "Санкт-Петербург", null));
-        users.add(new User("dmitrys", "Сергиенко", "Дмитрий", "dmitrys@yamoney.ru", "Санкт-Петербург", null));
+        users.add(new User(null, "Куркова", "Лина", "kurkova@yamoney.ru", "Санкт-Петербург", null));
+        users.add(new User(null, "Сергиенко", "Дмитрий", "dmitrys@yamoney.ru", "Санкт-Петербург", null));
 //        users.add(new User("yukokareva", "Кокарева", "Юлия", "yukokareva@yamoney.ru", "Санкт-Петербург", null));
 //        users.add(new User("evuspenskaya", "Успенская", "Елена", "evuspenskaya@yamoney.ru", "Москва", null));
 //        users.add(new User("krainovane", "Крайнова", "Наталья", "krainovane@yamoney.ru", "Нижний Новгород", null));
-
         return users;
     }
 
