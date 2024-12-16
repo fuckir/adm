@@ -1,18 +1,23 @@
 package adm;
 
-import java.util.*;
-
-
-import adm.domain.Grab;
-import adm.domain.RawUser;
+import adm.domain.LoginAddressWishlist;
+import adm.domain.NewStaffGrab;
 import adm.domain.User;
+import adm.domain.user.NewRawUser;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static adm.domain.Properties.PASSWORD;
 import static adm.domain.Properties.USER_NAME;
+import static java.lang.String.format;
+import static java.lang.String.join;
+import static java.lang.Thread.sleep;
+import static java.util.Collections.shuffle;
 
 /**
  * Created by dmitrys
@@ -21,64 +26,57 @@ import static adm.domain.Properties.USER_NAME;
 public class Adm {
 
     public static void main(String... args) throws EmailException {
+        List<LoginAddressWishlist> loginAddressWishlistList = new ArrayList<>(getLoginAddressWishlist());
+        shuffle(loginAddressWishlistList);
 
-        Map<String, String> loginWishlistMap = getLoginWishlistMap();
+        List<User> users = grabUsers(loginAddressWishlistList);
 
-        List<String> logins = new ArrayList<>(loginWishlistMap.keySet());
-
-        Collections.shuffle(logins);
-
-        collectMessagesAndSendEmail(logins, loginWishlistMap);
+        collectMessagesAndSendEmail(users);
     }
 
-    private static void collectMessagesAndSendEmail(List<String> logins, Map<String, String> loginWishlistMap) throws EmailException {
-        List<User> userList = getUsers(logins, loginWishlistMap);
-
+    private static void collectMessagesAndSendEmail(List<User> users) throws EmailException {
         User firstUser = null;
         User oldUser = null;
-        String content;
-        for (User user : userList) {
+
+        for (User user : users) {
             if (oldUser == null) {
                 firstUser = user;
             } else {
-                content = getMessages(user, oldUser);
-//                sendEmail(content, oldUser.getEmail()); //todo
+                String message = getMessage(user, oldUser);
+                sendEmail(message, oldUser.getEmail()); //todo
                 try {
-                    Thread.sleep(1000);
+                    sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
             oldUser = user;
         }
-        content = getMessages(firstUser, oldUser);
-//        sendEmail(content, oldUser.getEmail()); //todo
+        String message = getMessage(firstUser, oldUser);
+        sendEmail(message, oldUser.getEmail()); //todo
     }
 
     //
-    private static String getMessages(User newUser, User oldUser) {
+    private static String getMessage(User newUser, User oldUser) {
         String wishPart = !newUser.getWishList().isEmpty() ? "В вишлисте написано: \n" + newUser.getWishList() : "Вишлист пуст.\n\n";
 
         String[] testMessage = {oldUser.getFirstName(), oldUser.getLastName(), oldUser.getEmail(), newUser.getFirstName(),
-            newUser.getLastName(), newUser.getLogin(), newUser.getWishList()
+                newUser.getLastName(), newUser.getLogin(), newUser.getWishList()
         };
-        System.out.println(String.join(" ", testMessage));
+        System.out.println(join(" ", testMessage));
 
-        return String.format("Здравствуй, %s. \n"
-                             + "Мы тут всё хорошенько перетасовали и так случилось, что в этом году тебе предстоит осчастливить "
-                             + "подарком коллегу по имени: %s %s "
-                             + "(https://staff.yandex-team.ru/%s).\n\n"
-                             + "Теперь есть время до вечера 19 декабря (день перед празднованием Нового года в офисе), чтобы "
-                             + "обзавестись милым подарком для своей \"жертвы\" :)\n\n"
-                             + "В день празднования – 20 декабря до 15:00 оставь свой подарок вместе с остальными подарками под "
-                             + "Ёлочкой в лаунже. \n"
-                             + "\n"
-                             + "Обязательно напиши на подарке имя получателя!\n"
-                             + "Забрать свой подарок можно у этой же нарядной Ёлки в праздничный вечер. \n"
-//                             + wishPart
-                             + "\n\n-- \n"
-                             + "Помощник ТС\n",
-            oldUser.getFirstName(), newUser.getFirstName(), newUser.getLastName(), newUser.getLogin());
+        return format("Здравствуй, %s. \n"
+                        + "Мы тут всё хорошенько перетасовали и так случилось, что в этом году тебе предстоит осчастливить "
+                        + "подарком коллегу по имени: %s %s "
+                        + "(https://staff.yooteam.ru/#/%s).\n\n"
+                        + "Теперь есть время до 20 декабря (день празднования Нового года), чтобы "
+                        + "обзавестись подарком для своей \"жертвы\" :)\n\n"
+                        + "и 20 декабря положить подарок под ёлочку.\n" //todo разные места для городов
+                        + "\n"
+                        + wishPart
+                        + "\n\n-- \n"
+                        + "Yoomoney Santa\n",
+                oldUser.getFirstName(), newUser.getFirstName(), newUser.getLastName(), newUser.getLogin());
 //        return "Привет.\n"
 //               + "Завтра в течение дня надо принести подарок под ёлку, которая стоит на 5м этаже у ресепшена.\n"
 //               + "Подарок обязательно надо подписать. Постарайся подписать так, чтобы эта подпись не отвалилась, и чтобы потом не "
@@ -93,54 +91,52 @@ public class Adm {
 //               + "оперативно придумывать.";
     }
 
-    private static List<User> getUsers(List<String> logins, Map<String, String> loginWishlistMap) {
+    private static List<User> grabUsers(List<LoginAddressWishlist> loginAddressWishlistList) {
         List<User> users = new ArrayList<>();
 
-        //grab
-        Grab grab = new Grab();
-        for (String login : logins) {
-            RawUser rawUser = null;
-            rawUser = grab.parseRowUser(login);
-//                  if (rawUser != null && !rawUser.getLocation().getOffice().getCity().getName().getEn().equals("St. Petersburg")) {
-//                      // TODO: надомники и прочие москвичи
-//                      System.out.println("!!!!!!!!! " + rawUser.getLogin());
-//                  }
-            users.add(new User(
-                login,
-                rawUser.getName().getLast().getRu(),
-                rawUser.getName().getFirst().getRu(),
-                rawUser.getEmail(),
-                rawUser.getLocation().getOffice().getCity().getName().getEn(),
-                loginWishlistMap.get(login))
+        NewStaffGrab grab = new NewStaffGrab();
+        for (LoginAddressWishlist loginAddressWishlist : loginAddressWishlistList) {
+            NewRawUser rawUser = grab.parseRowUser(loginAddressWishlist.getLogin());
+            users.add(
+                    new User(
+                            rawUser.getLogin(),
+                            rawUser.getLastName(),
+                            rawUser.getFirstName(),
+                            rawUser.getWorkEmail(),
+                            loginAddressWishlist.getAddress(),
+                            null,
+                            loginAddressWishlist.getWishlist()
+                    )
             );
-//      }
         }
+
         return users;
     }
 
     private static void sendEmail(String content, String address) throws EmailException {
         Email email = new SimpleEmail();
-        email.setHostName("smtp.yandex-team.ru");
+        email.setHostName("mail.yoomoney.ru");
         email.setSmtpPort(25);
         email.setAuthenticator(new DefaultAuthenticator(USER_NAME, PASSWORD));
-        email.setSSLOnConnect(true);
         email.setCharset("UTF-8");
 
-        email.setFrom("dmitrys@yandex-team.ru");
-        email.setSubject("Письмо для Тайного Санты");
-//        email.setSubject("Клуб АДМ. Праздник уже завтра.");
+        email.setFrom("yoosanta@yoomoney.ru"); //yooteam@yoomoney.ru
+        email.setSubject("Письмо для YooSanta");
         email.setMsg(content);
         email.addTo(address);
-        email.addCc("dmitrys@yamoney.ru");
+        email.addCc("dmitrys@yoomoney.ru");
         email.send();
     }
 
-    private static Map<String, String> getLoginWishlistMap() {
-        Map<String, String> loginWishlistMap = new HashMap<>();
+    private static List<LoginAddressWishlist> getLoginAddressWishlist() {
+        List<LoginAddressWishlist> users = new ArrayList<>();
 
-        loginWishlistMap.put("dedovaiv", "");
-        loginWishlistMap.put("starovoitovak", "");
+        users.add(new LoginAddressWishlist("kroshchupkina", "", "что-то пахучее или рыбное или и такое и такое"));
+        users.add(new LoginAddressWishlist("zhenevskaya", "", ""));
+        users.add(new LoginAddressWishlist("bugaenkoki", "", "то, что ассоциируется с новым годом и уютом."));
+        users.add(new LoginAddressWishlist("avmelnikova", "", "дивное диво)"));
+        users.add(new LoginAddressWishlist("solovyevatd", "", "елочную игрушку или гирлянду"));
 
-        return loginWishlistMap;
+        return users;
     }
 }

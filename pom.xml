@@ -25,13 +25,14 @@
         <jackson-core.version>2.9.9</jackson-core.version>
         <commons-email.version>1.5</commons-email.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <kotlin.version>1.9.21</kotlin.version>
     </properties>
 
     <pluginRepositories>
         <pluginRepository>
             <id>central</id>
             <name>Maven Plugin Repository</name>
-            <url>http://repo1.maven.org/maven2</url>
+            <url>https://repo1.maven.org/maven2</url>
         </pluginRepository>
     </pluginRepositories>
 
@@ -45,6 +46,11 @@
     <name>ADM</name>
 
     <dependencies>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>

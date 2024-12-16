@@ -27,10 +27,7 @@ public class NewStaffGrab {
         conduit.getAuthorization().setUserName(USER_NAME);
         conduit.getAuthorization().setPassword(PASSWORD);
 
-        String data = service.getUser(
-            login,
-            true
-        );
+        String data = service.getUser(login, true);
 
         ObjectMapper mapper = new ObjectMapper();
         NewRawUser rawUser = null;

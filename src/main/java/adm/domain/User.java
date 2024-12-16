@@ -11,14 +11,17 @@ public class User {
     private String firstName;
     private String email;
     private String location;
+    private String joinAt;
     private String wishList;
 
-    public User(String login, String lastName, String firstName, String email, String location, String wishList) {
+    public User(String login, String lastName, String firstName, String email, String location, String joinAt,
+                String wishList) {
         this.login = login;
         this.lastName = lastName;
         this.firstName = firstName;
         this.email = email;
         this.location = location;
+        this.joinAt = joinAt;
         this.wishList = wishList;
     }
 
@@ -40,6 +43,10 @@ public class User {
 
     public String getLocation() {
         return location;
+    }
+
+    public String getJoinAt() {
+        return joinAt;
     }
 
     public String getWishList() {
