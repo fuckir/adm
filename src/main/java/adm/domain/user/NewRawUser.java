@@ -11,18 +11,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NewRawUser {
 
-    private String login;
-    private String firstName;
-    private String middleName;
-    private String lastName;
-    private String workPlace;
-    private String workPhone;
-    private String workEmail;
-    private String position;
-    private String hideMiddleName;
-    private String telegram;
-    private String avatarId;
-    private Department department;
+    private final String login;
+    private final String firstName;
+    private final String lastName;
+    private final String workPlace;
+    private final String workEmail;
 
     @JsonCreator
     public NewRawUser(@JsonProperty("login") String login,
@@ -36,20 +29,12 @@ public class NewRawUser {
                       @JsonProperty("hideMiddleName") String hideMiddleName,
                       @JsonProperty("telegram") String telegram,
                       @JsonProperty("avatarId") String avatarId,
-                      @JsonProperty("department") Department department)
-    {
+                      @JsonProperty("department") Department department) {
         this.login = login;
         this.firstName = firstName;
-        this.middleName = middleName;
         this.lastName = lastName;
         this.workPlace = workPlace;
-        this.workPhone = workPhone;
         this.workEmail = workEmail;
-        this.position = position;
-        this.hideMiddleName = hideMiddleName;
-        this.telegram = telegram;
-        this.avatarId = avatarId;
-        this.department = department;
     }
 
     public String getLogin() {

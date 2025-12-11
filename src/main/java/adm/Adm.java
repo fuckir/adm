@@ -43,7 +43,7 @@ public class Adm {
                 firstUser = user;
             } else {
                 String message = getMessage(user, oldUser);
-                sendEmail(message, oldUser.getEmail()); //todo
+                sendEmail(message, oldUser.getEmail());
                 try {
                     sleep(1000);
                 } catch (InterruptedException e) {
@@ -53,10 +53,10 @@ public class Adm {
             oldUser = user;
         }
         String message = getMessage(firstUser, oldUser);
-        sendEmail(message, oldUser.getEmail()); //todo
+        sendEmail(message, oldUser.getEmail());
     }
 
-    //
+
     private static String getMessage(User newUser, User oldUser) {
         String wishPart = !newUser.getWishList().isEmpty() ? "В вишлисте написано: \n" + newUser.getWishList() : "Вишлист пуст.\n\n";
 
@@ -65,13 +65,13 @@ public class Adm {
         };
         System.out.println(join(" ", testMessage));
 
-        return format("Здравствуй, %s. \n"
+        return format("Здравствуй, %s! \n\n"
                         + "Мы тут всё хорошенько перетасовали и так случилось, что в этом году тебе предстоит осчастливить "
                         + "подарком коллегу по имени: %s %s "
                         + "(https://staff.yooteam.ru/#/%s).\n\n"
-                        + "Теперь есть время до 20 декабря (день празднования Нового года), чтобы "
+                        + "Теперь есть время до 19 декабря (день празднования Нового года), чтобы "
                         + "обзавестись подарком для своей \"жертвы\" :)\n\n"
-                        + "и 20 декабря положить подарок под ёлочку.\n" //todo разные места для городов
+                        + "и 19 декабря положить подарок под ёлочку.\n" //разные места для городов
                         + "\n"
                         + wishPart
                         + "\n\n-- \n"
@@ -131,11 +131,11 @@ public class Adm {
     private static List<LoginAddressWishlist> getLoginAddressWishlist() {
         List<LoginAddressWishlist> users = new ArrayList<>();
 
-        users.add(new LoginAddressWishlist("kroshchupkina", "", "что-то пахучее или рыбное или и такое и такое"));
-        users.add(new LoginAddressWishlist("zhenevskaya", "", ""));
-        users.add(new LoginAddressWishlist("bugaenkoki", "", "то, что ассоциируется с новым годом и уютом."));
-        users.add(new LoginAddressWishlist("avmelnikova", "", "дивное диво)"));
-        users.add(new LoginAddressWishlist("solovyevatd", "", "елочную игрушку или гирлянду"));
+        users.add(new LoginAddressWishlist("vmsmirnova", "", ""));
+        users.add(new LoginAddressWishlist("yudinada", "", "у меня есть подготовленный вишлист, вот он https://ohmywishes.com/users/wasted.daylight/lists/676932f71f4d29f140011548 \nвам нужен список «тайный санта». постаралась подобрать на разные варианты бюджета :)\n\nесли без вишлиста, то я очень люблю книги (особенно про мифологию и видеоигры),\nвсякие стикеры, аромадиффузоры (только не цитрусовые), свечки и зелёный чай.\nпожалуйста, не дарите мне чашки и шоколадки.."));
+        users.add(new LoginAddressWishlist("aravinaak", "", "Буду рада любому подарку, но также у меня есть вишлист - https://market.yandex.ru/cc/8CFh6k"));
+        users.add(new LoginAddressWishlist("aapotkina", "", "в приоритете любая прикольная канцелярка (типа ручек с блёстками, блокноты с меховой обложкой, цветные карандаши и т. п.), любые творческие штуки, ещё можно плюшевые игрушки, необычные безалкогольные напитки, тарелки, носки, чай улун\n\nлучше не дарить сладости\n\nно есть и вишлист: https://ru.mywishboard.com/@kyrtyshtykh"));
+        users.add(new LoginAddressWishlist("varlashina", "", "за любой лесной и смешной кипиш. универсальный подарок - сыр и коробки с игрушкой-сюрпризом\n\nесть вишлист, в котором ссылки ещё на два вишлиста на любой бюджет: https://mywishboard.com/@draconiha"));
 
         return users;
     }
